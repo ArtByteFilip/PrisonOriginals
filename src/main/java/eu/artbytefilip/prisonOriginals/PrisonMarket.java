@@ -47,21 +47,41 @@ public class PrisonMarket implements Listener, CommandExecutor {
                 continue;
             }
 
-            int amount = item.getAmount();
+            int amount = item.getAmount(); // Počet blokov v tomto ItemStacku
+            double pricePerBlock = 0.0; // Cena za jeden blok
+            boolean hasValidLore = false;
 
             for (String loreLine : Objects.requireNonNull(meta.getLore())) {
-                if (loreLine.contains("Mined by:")) {
+                if (loreLine.contains("Price per once:")) {
                     try {
-                        item.setAmount(0);
-                        if (player.isOnline()) {
-                            User user = essentials.getUser(player); // Získanie User objektu z EssentialsX
-                            user.giveMoney(BigDecimal.valueOf(1.0));
-                        }
-                    } catch (NumberFormatException err) {
-                        System.out.println("Error: " + err);
-                    } catch (MaxMoneyException e) {
-                        throw new RuntimeException(e);
+                        String[] parts = loreLine.split(":");
+                        pricePerBlock = Double.parseDouble(parts[1].replaceAll("[^0-9.]", "").trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Error parsing price from lore: " + e.getMessage());
+                        pricePerBlock = 0.0; // Ak sa nepodarí načítať cenu, nastav na 0
                     }
+                    hasValidLore = true;
+                }
+
+                if (loreLine.contains("Mined by:")) {
+                    hasValidLore = true;
+                }
+            }
+
+            if (hasValidLore && pricePerBlock > 0) {
+                try {
+                    // Výpočet celkovej hodnoty a odstránenie blokov
+                    double totalPrice = pricePerBlock * amount; // Celková hodnota ItemStacku
+                    item.setAmount(0); // Odstránenie blokov
+
+                    if (player.isOnline()) {
+                        User user = essentials.getUser(player); // Získanie User objektu z EssentialsX
+                        user.giveMoney(BigDecimal.valueOf(totalPrice)); // Pripočíta sumu podľa celkovej hodnoty
+                    }
+                } catch (NumberFormatException err) {
+                    System.out.println("Error: " + err);
+                } catch (MaxMoneyException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }

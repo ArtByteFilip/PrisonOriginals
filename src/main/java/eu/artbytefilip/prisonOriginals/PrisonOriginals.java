@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
 import java.util.logging.Level;
 
 public final class PrisonOriginals extends JavaPlugin implements Listener {
@@ -16,7 +17,7 @@ public final class PrisonOriginals extends JavaPlugin implements Listener {
         IEssentials essentials = (IEssentials) getServer().getPluginManager().getPlugin("Essentials");
         Bukkit.getPluginManager().registerEvents(new Core(this), this);
 
-        getCommand("sellall").setExecutor(new PrisonMarket(essentials));
+        Objects.requireNonNull(getCommand("sellall")).setExecutor(new PrisonMarket(essentials));
 
         getServer().getPluginManager().registerEvents(this, this);
     }
