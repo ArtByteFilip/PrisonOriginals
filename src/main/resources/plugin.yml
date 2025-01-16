@@ -1,4 +1,10 @@
 name: PrisonOriginals
 version: '0.1'
+author: ArtByteFilip
 main: eu.artbytefilip.prisonOriginals.PrisonOriginals
 api-version: '1.21'
+commands:
+  sellall:
+    description: Sell all prison blocks.
+    usage: /sellall
+    aliases: sa

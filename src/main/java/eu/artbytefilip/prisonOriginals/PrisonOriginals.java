@@ -14,7 +14,9 @@ public final class PrisonOriginals extends JavaPlugin implements Listener {
         getLogger().log(Level.INFO, "{0}.onEnable()", this.getClass().getName());
 
         IEssentials essentials = (IEssentials) getServer().getPluginManager().getPlugin("Essentials");
-        Bukkit.getPluginManager().registerEvents(new Core(this, essentials), this);
+        Bukkit.getPluginManager().registerEvents(new Core(this), this);
+
+        getCommand("sellall").setExecutor(new PrisonMarket(essentials));
 
         getServer().getPluginManager().registerEvents(this, this);
     }
