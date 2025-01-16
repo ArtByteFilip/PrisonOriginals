@@ -21,8 +21,8 @@ public class Core implements Listener {
 
     private final PrisonOriginals plugin;
     private final PrisonBlock[] minableBlocks = new PrisonBlock[]{
-            new PrisonBlock("Prison Sandstone", Material.SANDSTONE, 50, 5),
-            new PrisonBlock("Prison Cobblestone", Material.COBBLESTONE, 100, 10)
+            new PrisonBlock("Prison Sandstone", Material.SANDSTONE, 100, 3),
+            new PrisonBlock("Prison Cobblestone", Material.COBBLESTONE, 100, 5)
     };
 
     public Core(PrisonOriginals plugin) {
