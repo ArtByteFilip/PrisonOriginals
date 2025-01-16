@@ -31,7 +31,7 @@ public class Core implements Listener {
     }
 
     @EventHandler
-    public void onPlayerBlockBreak(BlockBreakEvent e) throws MaxMoneyException {
+    public void onPlayerBlockBreak(BlockBreakEvent e) {
         Player player = e.getPlayer();
         GameMode playerGamemode = player.getGameMode();
         Block block = e.getBlock();
