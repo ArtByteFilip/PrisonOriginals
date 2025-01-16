@@ -1,5 +1,6 @@
 package eu.artbytefilip.prisonOriginals;
 
+import net.ess3.api.IEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,7 +13,8 @@ public final class PrisonOriginals extends JavaPlugin implements Listener {
     public void onEnable() {
         getLogger().log(Level.INFO, "{0}.onEnable()", this.getClass().getName());
 
-        Bukkit.getPluginManager().registerEvents(new Core(this), this);
+        IEssentials essentials = (IEssentials) getServer().getPluginManager().getPlugin("Essentials");
+        Bukkit.getPluginManager().registerEvents(new Core(this, essentials), this);
 
         getServer().getPluginManager().registerEvents(this, this);
     }
