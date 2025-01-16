@@ -20,11 +20,10 @@ import java.util.Objects;
 public class Core implements Listener {
 
     private final PrisonOriginals plugin;
-    private final PrisonBlock[] minableBlocks = new PrisonBlock[] {
+    private final PrisonBlock[] minableBlocks = new PrisonBlock[]{
             new PrisonBlock("Prison Sandstone", Material.SANDSTONE, 50, 5),
             new PrisonBlock("Prison Cobblestone", Material.COBBLESTONE, 100, 10)
     };
-
 
     public Core(PrisonOriginals plugin) {
         this.plugin = plugin;
@@ -78,13 +77,14 @@ public class Core implements Listener {
         ItemMeta metaMain = itemInHandMain.getItemMeta();
         ItemMeta metaOff = itemInHandOff.getItemMeta();
 
-        if (hasMinedByLore(metaMain) && itemInHandMain.getType() == Material.SANDSTONE) {
-            e.setCancelled(true);
-            return;
-        }
-
-        if (hasMinedByLore(metaOff) && itemInHandOff.getType() == Material.SANDSTONE) {
-            e.setCancelled(true);
+        for (PrisonBlock prisonBlock : minableBlocks) {
+            if (hasMinedByLore(metaMain) && itemInHandMain.getType() == prisonBlock.getMaterial()) {
+                e.setCancelled(true);
+                return;
+            }
+            if (hasMinedByLore(metaOff) && itemInHandOff.getType() == prisonBlock.getMaterial()) {
+                e.setCancelled(true);
+            }
         }
     }
 
