@@ -6,7 +6,7 @@ public class PrisonBlock {
     private final String name;
     private final Material material;
     private final int cooldown;
-    private float price;
+    private final float price;
 
     public PrisonBlock(String name, Material material, int cooldown, float price) {
         this.name = name;
