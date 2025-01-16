@@ -21,8 +21,8 @@ public class Core implements Listener {
 
     private final PrisonOriginals plugin;
     private final PrisonBlock[] minableBlocks = new PrisonBlock[] {
-            new PrisonBlock(Material.SANDSTONE, 50),
-            new PrisonBlock(Material.COBBLESTONE, 100)
+            new PrisonBlock(Material.SANDSTONE, 50, 5),
+            new PrisonBlock(Material.COBBLESTONE, 100, 10)
     };
 
 
@@ -44,7 +44,7 @@ public class Core implements Listener {
         for (PrisonBlock prisonBlock : minableBlocks) {
             if (block.getType() == prisonBlock.getMaterial()) {
                 e.setCancelled(true); // Zrušíme event
-                player.getInventory().addItem(createBlock(block, player)); // Pridáme hráčovi blok
+                player.getInventory().addItem(createBlock(block, player, prisonBlock.getPrice())); // Pridáme hráčovi blok
 
                 block.setType(Material.BEDROCK); // Nastavíme blok na BEDROCK
                 respawnBlock(prisonBlock.getCooldown(), block, firstBlockType); // Pošleme úlohu s oneskorením
@@ -101,7 +101,7 @@ public class Core implements Listener {
         return false;
     }
 
-    private ItemStack createBlock(Block block, Player player) {
+    private ItemStack createBlock(Block block, Player player, float price) {
         ItemStack item = new ItemStack(block.getType());
         ItemMeta meta = item.getItemMeta();
 
@@ -110,6 +110,7 @@ public class Core implements Listener {
 
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.AQUA + "Mined by: " + ChatColor.WHITE + player.getName());
+        lore.add(ChatColor.AQUA + "Price per once: " + ChatColor.WHITE + price + "€");
         meta.setLore(lore);
 
         meta.setCustomModelData(12);
