@@ -1,6 +1,5 @@
 package eu.artbytefilip.prisonOriginals;
 
-import net.ess3.api.MaxMoneyException;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -41,9 +40,10 @@ public class Core implements Listener {
             return;
         }
 
+        e.setCancelled(true); // Zrušíme event
+
         for (PrisonBlock prisonBlock : minableBlocks) {
             if (block.getType() == prisonBlock.getMaterial()) {
-                e.setCancelled(true); // Zrušíme event
                 player.getInventory().addItem(createBlock(block, player, prisonBlock.getName(), prisonBlock.getPrice())); // Pridáme hráčovi blok
                 block.setType(Material.BEDROCK); // Nastavíme blok na BEDROCK
                 respawnBlock(prisonBlock.getCooldown(), block, firstBlockType); // Pošleme úlohu s oneskorením
