@@ -1,0 +1,4 @@
+name: PrisonOriginals
+version: '1.0-SNAPSHOT'
+main: eu.artbytefilip.prisonOriginals.PrisonOriginals
+api-version: '1.21'
