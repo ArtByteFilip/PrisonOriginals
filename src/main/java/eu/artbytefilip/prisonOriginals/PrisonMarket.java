@@ -62,10 +62,6 @@ public class PrisonMarket implements Listener, CommandExecutor {
                     }
                     hasValidLore = true;
                 }
-
-                if (loreLine.contains("Mined by:")) {
-                    hasValidLore = true;
-                }
             }
 
             if (hasValidLore && pricePerBlock > 0) {
