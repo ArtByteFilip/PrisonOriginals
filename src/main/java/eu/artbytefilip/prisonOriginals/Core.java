@@ -4,7 +4,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,10 +15,16 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Core implements Listener {
 
     private final PrisonOriginals plugin;
+    private PrisonBlock[] minableBlocks = new PrisonBlock[] {
+            new PrisonBlock(Material.SANDSTONE, 50),
+            new PrisonBlock(Material.COBBLESTONE, 100)
+    };
+
 
     public Core(PrisonOriginals plugin) {
         this.plugin = plugin;
@@ -36,12 +41,15 @@ public class Core implements Listener {
             return;
         }
 
-        if (block.getType() == Material.SANDSTONE) {
-            e.setCancelled(true); // Zrušíme event
-            player.getInventory().addItem(createBlock(block, player)); // Pridáme hráčovi blok
+        for (PrisonBlock prisonBlock : minableBlocks) {
+            if (block.getType() == prisonBlock.getMaterial()) {
+                e.setCancelled(true); // Zrušíme event
+                player.getInventory().addItem(createBlock(block, player)); // Pridáme hráčovi blok
 
-            block.setType(Material.BEDROCK); // Nastavíme blok na BEDROCK
-            respawnBlock(100, block, firstBlockType); // Pošleme úlohu s oneskorením
+                block.setType(Material.BEDROCK); // Nastavíme blok na BEDROCK
+                respawnBlock(prisonBlock.getCooldown(), block, firstBlockType); // Pošleme úlohu s oneskorením
+                break; // Ak sa materiál zhoduje, zlomíme cyklus, aby sa ďalšie porovnania neuskutočnili
+            }
         }
     }
 
@@ -53,7 +61,7 @@ public class Core implements Listener {
                     block.setType(firstBlockType); // Vrátiť pôvodný blok
                 }
             }
-        }.runTaskLater(plugin, (long) delayTicks); // Preveďte delayTicks na long
+        }.runTaskLater(plugin, (long) delayTicks);
     }
 
     @EventHandler
@@ -85,7 +93,7 @@ public class Core implements Listener {
             return false;
         }
 
-        for (String loreLine : itemMeta.getLore()) {
+        for (String loreLine : Objects.requireNonNull(itemMeta.getLore())) {
             if (loreLine.contains("Mined by:")) {
                 return true;
             }
@@ -97,6 +105,7 @@ public class Core implements Listener {
         ItemStack item = new ItemStack(block.getType());
         ItemMeta meta = item.getItemMeta();
 
+        assert meta != null;
         meta.setDisplayName("Prison Sandstone");
 
         List<String> lore = new ArrayList<>();
