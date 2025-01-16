@@ -20,7 +20,7 @@ import java.util.Objects;
 public class Core implements Listener {
 
     private final PrisonOriginals plugin;
-    private PrisonBlock[] minableBlocks = new PrisonBlock[] {
+    private final PrisonBlock[] minableBlocks = new PrisonBlock[] {
             new PrisonBlock(Material.SANDSTONE, 50),
             new PrisonBlock(Material.COBBLESTONE, 100)
     };
@@ -61,7 +61,7 @@ public class Core implements Listener {
                     block.setType(firstBlockType); // Vrátiť pôvodný blok
                 }
             }
-        }.runTaskLater(plugin, (long) delayTicks);
+        }.runTaskLater(plugin, delayTicks);
     }
 
     @EventHandler
